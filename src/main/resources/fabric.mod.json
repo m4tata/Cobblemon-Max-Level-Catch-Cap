@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblemon_level_cap",
+  "version": "${version}",
+  "name": "Cobblemon Max Level Catch Cap",
+  "description": "Prevents players from catching Pokémon with a level higher, than their parties strongest Pokémon!",
+  "authors": [
+    "SpecDomino"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/project/cobblemon-max-level-catch-cap"
+  },
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "org.specdomino.cobblemon_level_cap.client.Cobblemon_level_capDataGenerator"
+    ],
+    "client": [
+      "org.specdomino.cobblemon_level_cap.client.Cobblemon_level_capClient"
+    ],
+    "main": [
+      "org.specdomino.cobblemon_level_cap.Cobblemon_level_cap"
+    ]
+  },
+  "mixins": [
+    "cobblemon_level_cap.mixins.json",
+    {
+      "config": "cobblemon_level_cap.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21",
+    "java": ">=21",
+    "fabric-api": "*",
+    "cobblemon": ">=1.7"
+  }
+}
