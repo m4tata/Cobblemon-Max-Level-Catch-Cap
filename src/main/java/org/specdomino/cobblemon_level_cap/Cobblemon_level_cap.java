@@ -29,6 +29,10 @@ public class Cobblemon_level_cap implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Init: Level Cap Mod");
 
+        // load configuration (creates file with defaults if missing)
+        Config.load();
+        LOGGER.info("Config loaded: defaultCap={}, extraAllowance={}", Config.defaultLevelCap, Config.extraLevelAllowance);
+
         CobblemonEvents.THROWN_POKEBALL_HIT.subscribe(Priority.HIGH, (ThrownPokeballHitEvent event) -> {
             EmptyPokeBallEntity ball = event.getPokeBall();
             Entity owner = ball.getOwner();
@@ -41,7 +45,7 @@ public class Cobblemon_level_cap implements ModInitializer {
             int wildLevel = hitPokemonEntity.getPokemon().getLevel();
 
             PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
-            int maxPartyLevel = 5;
+            int maxPartyLevel = Config.defaultLevelCap;
 
             for (Pokemon p : party) {
                 if (p.getLevel() > maxPartyLevel) {
@@ -49,10 +53,11 @@ public class Cobblemon_level_cap implements ModInitializer {
                 }
             }
 
-            if (wildLevel > maxPartyLevel) {
+            int allowedLevel = maxPartyLevel + Config.extraLevelAllowance;
+            if (wildLevel > allowedLevel) {
                 event.cancel();
                 player.sendMessage(
-                        Text.literal("This Pokémon is too Strong! Max Catch Level: " + maxPartyLevel)
+                        Text.literal("This Pokémon is too Strong! Max Catch Level: " + allowedLevel)
                                 .formatted(Formatting.RED),
                         true
                 );
